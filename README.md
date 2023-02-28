@@ -92,4 +92,7 @@ To Stop Docker Container
 docker stop <container_id>
 ```
 
+```
+python setup.py install
+```
 
