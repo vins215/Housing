@@ -15,7 +15,7 @@ def get_requirement_list()->List[str]:
 
     """
     with open(REQUIREMENT_FILE_NAME) as reqirement_file:
-        return reqirement_file.readlines()
+        return reqirement_file.readlines().remove("-e .")
 
 setup(
 name=PROJECT_NAME ,
