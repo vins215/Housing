@@ -15,7 +15,10 @@ def get_requirement_list()->List[str]:
 
     """
     with open(REQUIREMENT_FILE_NAME) as reqirement_file:
-        return reqirement_file.readlines().remove("-e .")
+        requirement_listt = [lib_name.replace("\n","") for lib_name in reqirement_file.readlines()]
+        if "-e ." in requirement_listt:
+            requirement_listt.remove("-e .")
+        return requirement_listt
 
 setup(
 name=PROJECT_NAME ,
