@@ -59,13 +59,17 @@ class DataIngestion:
             raw_data_dir = self.data_ingestion_config.raw_data_dir
             filename = os.listdir(raw_data_dir)[0]
             housing_file_path  = os.path.join(raw_data_dir,filename)
+
+            logging.info(f"Reading CSV files:[{housing_file_path}]")
             housing_data_frame = pd.read_csv(housing_file_path)
 
             housing_data_frame["income_cat"] = pd.cut(
                 housing_data_frame["median_income"],
-                bins=[0.0,1.5,3.0,4.5,6.0,np.inf]
+                bins=[0.0,1.5,3.0,4.5,6.0,np.inf] ,
                 labels=[1,2,3,4,5]
             )
+
+            logging.info(f"SPlltting data into train and test")
             strat_train_set = None
             strat_test_set = None
 
@@ -77,14 +81,37 @@ class DataIngestion:
             
             train_file_path = os.path.join(self.data_ingestion_config.ingested_train_dir,filename)
             test_file_path = os.path.join(self.data_ingestion_config.ingested_test_dir,filename)
+
+            if strat_train_set is not None:
+                os.makedirs(self.data_ingestion_config.ingested_train_dir,exist_ok=True)
+                logging.info(f"Exporting training dataset into file :[{train_file_path}]")
+                strat_train_set.to_csv(train_file_path,index = False)
+
+            if strat_test_set is not None:
+                os.makedirs(self.data_ingestion_config.ingested_test_dir,exist_ok=True)
+                logging.info(f"Exporting test dataset into file :{[train_file_path]}")
+                strat_test_set.to_csv(test_file_path,index = False)
+
+            data_ingestion_artifact = DataIngestionArtifact(training_file_path=train_file_path,
+                                  test_file_path=test_file_path,
+                                  is_ingested=True,
+                                  message=f"Data ingestion completed sucessfully ")
+            logging.info(f"Data ingestion Artifact :{[data_ingestion_artifact]}")
+            
+            return data_ingestion_artifact
         except Exception as e:
             raise HousingException(e,sys) from e
         
     def initiate_data_ingestiion(self)->DataIngestionArtifact:
         try:
             tgz_file_path = self.download_housing_data()
+            self.extract_tgz_file(tgz_file_path=tgz_file_path)
+
+            return self.split_data_train_test()
 
 
         except Exception as e:
             raise HousingException(e,sys) from e 
     
+    def __del__(self):
+        pass
