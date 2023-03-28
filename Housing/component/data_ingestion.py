@@ -3,7 +3,7 @@ from Housing.entity.config_entity import DataIngestionConfig
 from Housing.exception import HousingException
 import sys,os
 from Housing.logger import logging
-from Housing.entity.aftifact_entity import DataIngestionArtifact
+from Housing.entity.artifact_entity import DataIngestionArtifact
 import tarfile
 from six.moves import urllib
 import pandas as pd

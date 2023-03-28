@@ -1,10 +1,11 @@
-from housing.entity.config_entity import DataIngestionConfig, DataTransformationConfig,DataValidationConfig,   \
+
+from Housing.entity.config_entity import DataIngestionConfig, DataTransformationConfig,DataValidationConfig,   \
 ModelTrainerConfig,ModelEvaluationConfig,ModelPusherConfig,TrainingPipelineConfig
-from housing.util.util import read_yaml_file
-from housing.logger import logging
+from Housing.util.util import read_yaml_file
+from Housing.logger import logging
 import sys,os
-from housing.constant import *
-from housing.exception import HousingException
+from Housing.constant import *
+from Housing.exception import HousingException
 
 
 class Configuartion:
